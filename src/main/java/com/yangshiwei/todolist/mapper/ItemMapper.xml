@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangshiwei.todolist.mapper.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.yangshiwei.todolist.model.Item">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, state, item, time, create_time
+  </sql>
+  <select id="getItems" resultType="item">
+    select
+    id, state, item, time
+    from item
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yangshiwei.todolist.model.Item">
+    insert into item (id, state, item, 
+      time, create_time)
+    values (#{id,jdbcType=INTEGER}, 0, #{item,jdbcType=VARCHAR},
+      #{time,jdbcType=TIMESTAMP}, now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.yangshiwei.todolist.model.Item">
+    insert into item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="item != null">
+        item,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="item != null">
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yangshiwei.todolist.model.Item">
+    update item
+    <set>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="item != null">
+        item = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yangshiwei.todolist.model.Item">
+    update item
+    set state = #{state,jdbcType=TINYINT},
+      item = #{item,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="delItems" parameterType="java.util.List">
+    delete
+    from item
+    where id in
+    <foreach collection="list" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>
