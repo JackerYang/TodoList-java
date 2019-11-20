@@ -11,10 +11,12 @@ public class Result {
     private int status;
     private String msg;
     private Object data;
-    public static Result ok (Object data) {
+
+    public static Result ok(Object data) {
         return new Result(200, "", data);
     }
-    public static Result ok () {
+
+    public static Result ok() {
         return new Result(200, "", null);
     }
 }
