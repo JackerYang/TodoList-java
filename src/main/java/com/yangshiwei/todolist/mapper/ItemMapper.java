@@ -5,6 +5,8 @@ import com.yangshiwei.todolist.model.Item;
 import java.util.List;
 
 public interface ItemMapper {
+    Item[] getItems();
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Item record);
@@ -16,8 +18,6 @@ public interface ItemMapper {
     int updateByPrimaryKeySelective(Item record);
 
     int updateByPrimaryKey(Item record);
-
-    Item[] getItems();
 
     int delItems(List<Integer> ids);
 }
